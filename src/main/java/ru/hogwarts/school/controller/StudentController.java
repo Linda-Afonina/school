@@ -1,9 +1,12 @@
 package ru.hogwarts.school.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.StudentService;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -22,22 +25,34 @@ public class StudentController {
     }
 
     @GetMapping("{id}")
-    public Student getStudentById(@PathVariable("id") long id) {
-        return studentService.getStudentById(id);
+    public ResponseEntity<Student> getStudentById(@PathVariable("id") long id) {
+        Student student = studentService.getStudentById(id);
+        if (student == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(student);
     }
 
     @PutMapping("{id}")
-    public Student updateStudent(@PathVariable("id") long id, @RequestBody Student student) {
-        return studentService.updateStudent(id, student);
+    public ResponseEntity<Student> updateStudent(@PathVariable("id") long id, @RequestBody Student student) {
+        Student foundStudent = studentService.updateStudent(id, student);
+        if (foundStudent == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(foundStudent);
     }
 
     @DeleteMapping("{id}")
-    public Student deleteStudentById(@PathVariable("id") long id) {
-        return studentService.deleteStudentById(id);
+    public ResponseEntity<Void> deleteStudentById(@PathVariable("id") long id) {
+        studentService.deleteStudentById(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public List<Student> printStudentsOfCertainAge(@RequestParam("age") int age) {
-        return studentService.printStudentsOfCertainAge(age);
+    public ResponseEntity<List<Student>> printStudentsOfCertainAge(@RequestParam("age") int age) {
+        if (age > 0) {
+            return ResponseEntity.ok(studentService.printStudentsOfCertainAge(age));
+        }
+        return ResponseEntity.ok(Collections.emptyList());
     }
 }
