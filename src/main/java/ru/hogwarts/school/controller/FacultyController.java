@@ -4,8 +4,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -54,5 +56,21 @@ public class FacultyController {
             return ResponseEntity.ok(facultyService.printFacultiesOfCertainColor(color));
         }
         return ResponseEntity.ok(Collections.emptyList());
+    }
+
+    @GetMapping("byNameIgnoreCaseOrColorIgnoreCase")
+    public ResponseEntity<List<Faculty>> printFacultiesOfCertainNameOrCertainColorIgnoreCase(
+            @RequestParam(required = false, value = "name") String name,
+            @RequestParam(required = false, value = "color") String color
+    ) {
+        if ((name != null && !name.isBlank()) || (color != null && !color.isBlank())) {
+            return ResponseEntity.ok(facultyService.printFacultiesOfCertainNameOrCertainColorIgnoreCase(name, color));
+        }
+        return ResponseEntity.ok(Collections.emptyList());
+    }
+
+    @GetMapping("{id}/students")
+    public Collection<Student> printStudentsOfFaculty(@PathVariable("id") long facultyId) {
+        return facultyService.printStudentsOfFaculty(facultyId);
     }
 }
