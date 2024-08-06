@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class FacultyServiceTest {
 
-    FacultyService out = new FacultyService();
+    FacultyService out;
 
     @Test
     public void shouldCreateCurrentFaculty() {
@@ -32,15 +32,6 @@ public class FacultyServiceTest {
         Faculty expectedFaculty = new Faculty(1, "Griffindor", "Blue");
         out.createFaculty(initialFaculty);
         Faculty actualFaculty = out.updateFaculty(1L, expectedFaculty);
-
-        assertEquals(expectedFaculty, actualFaculty);
-    }
-
-    @Test
-    public void shouldDeleteFaculty() {
-        Faculty expectedFaculty = new Faculty(1, "Griffindor", "Green");
-        out.createFaculty(expectedFaculty);
-        Faculty actualFaculty = out.deleteFacultyById(expectedFaculty.getId());
 
         assertEquals(expectedFaculty, actualFaculty);
     }

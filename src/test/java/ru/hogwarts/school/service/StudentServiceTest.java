@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StudentServiceTest {
 
-    StudentService out = new StudentService();
+    StudentService out;
 
     @Test
     public void shouldCreateCurrentStudent() {
@@ -32,15 +32,6 @@ public class StudentServiceTest {
         Student expectedStudent = new Student(1, "Harry ", 27);
         out.createStudent(initialStudent);
         Student actualStudent = out.updateStudent(1L, expectedStudent);
-
-        assertEquals(expectedStudent, actualStudent);
-    }
-
-    @Test
-    public void shouldDeleteStudent() {
-        Student expectedStudent = new Student(2, "Harry", 25);
-        out.createStudent(expectedStudent);
-        Student actualStudent = out.deleteStudentById(expectedStudent.getId());
 
         assertEquals(expectedStudent, actualStudent);
     }

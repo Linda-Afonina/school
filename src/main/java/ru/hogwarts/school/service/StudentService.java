@@ -2,6 +2,7 @@ package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,33 +11,35 @@ import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
-    Map<Long, Student> listOfStudents = new HashMap<>();
-    Long generatedStudentId = 0L;
+    private final StudentRepository studentRepository;
+
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     public Student createStudent(Student student) {
-        student.setId(++generatedStudentId);
-        listOfStudents.put(generatedStudentId, student);
-        return student;
+        return studentRepository.save(student);
     }
 
     public Student getStudentById(Long id) {
-        return listOfStudents.get(id);
+        return studentRepository.findById(id).orElse(null);
     }
 
     public Student updateStudent(Long id, Student student) {
-        Student studentForUpdate = listOfStudents.get(id);
-        studentForUpdate.setAge(student.getAge());
-        studentForUpdate.setName(student.getName());
-        return studentForUpdate;
+        return studentRepository.findById(id).map(studentForUpdate -> {
+            studentForUpdate.setName(student.getName());
+            studentForUpdate.setAge(student.getAge());
+            studentRepository.save(studentForUpdate);
+            return studentForUpdate;
+        }).orElse(null);
+
     }
 
-    public Student deleteStudentById(Long id) {
-        return listOfStudents.remove(id);
+    public void deleteStudentById(Long id) {
+        studentRepository.deleteById(id);
     }
 
     public List<Student> printStudentsOfCertainAge(int age) {
-        return listOfStudents.values().stream()
-                .filter(student -> student.getAge() == age)
-                .collect(Collectors.toList());
+        return studentRepository.findAllByAge(age);
     }
 }
