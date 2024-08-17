@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school.model.Avatar;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.AvatarRepository;
+import ru.hogwarts.school.repository.StudentRepository;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -23,18 +24,19 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 public class AvatarService {
 
     private final AvatarRepository avatarRepository;
-    private final StudentService studentService;
+    private final StudentRepository studentRepository;
 
     @Value("${path.to.avatars.folder}")
     private String avatarsDir;
 
-    public AvatarService(AvatarRepository avatarRepository, StudentService studentService) {
+    public AvatarService(AvatarRepository avatarRepository, StudentRepository studentRepository) {
         this.avatarRepository = avatarRepository;
-        this.studentService = studentService;
+        this.studentRepository = studentRepository;
     }
 
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
-        Student student = studentService.getStudentById(studentId);
+        Student student = studentRepository.findById(studentId).orElseThrow(() ->
+                new IllegalArgumentException("Student was not found"));
         Path filePath = Path.of(avatarsDir, studentId + "." + getExtensions(avatarFile.getOriginalFilename()));
         Files.createDirectories(filePath.getParent());
         Files.deleteIfExists(filePath);
