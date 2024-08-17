@@ -26,6 +26,8 @@ public class AvatarService {
     private final AvatarRepository avatarRepository;
     private final StudentRepository studentRepository;
 
+    private final int MAX_SIZE = 1024;
+
     @Value("${path.to.avatars.folder}")
     private String avatarsDir;
 
@@ -43,8 +45,8 @@ public class AvatarService {
         try (
                 InputStream is = avatarFile.getInputStream();
                 OutputStream os = Files.newOutputStream(filePath, CREATE_NEW);
-                BufferedInputStream bis = new BufferedInputStream(is, 1024);
-                BufferedOutputStream bos = new BufferedOutputStream(os, 1024);
+                BufferedInputStream bis = new BufferedInputStream(is, MAX_SIZE);
+                BufferedOutputStream bos = new BufferedOutputStream(os, MAX_SIZE);
         ) {
             bis.transferTo(bos);
         }
@@ -67,7 +69,7 @@ public class AvatarService {
 
     private byte[] generateImagePreview(Path filePath) throws IOException {
         try (InputStream is = Files.newInputStream(filePath);
-             BufferedInputStream bis = new BufferedInputStream(is, 1024);
+             BufferedInputStream bis = new BufferedInputStream(is, MAX_SIZE);
              ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             BufferedImage image = ImageIO.read(bis);
 
