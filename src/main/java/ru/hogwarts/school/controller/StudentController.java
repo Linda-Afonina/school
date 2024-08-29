@@ -70,4 +70,13 @@ public class StudentController {
     public Faculty getFacultyOfStudent(@PathVariable("id") long id) {
         return studentService.getFacultyOfStudent(id);
     }
+
+    @GetMapping("get-all-students")
+    public ResponseEntity<List<Student>> getAllStudents(@RequestParam("page") Integer pageNumber,
+                                                        @RequestParam("size") Integer pageSize) {
+        return ResponseEntity.ok(studentService.getAllStudent(pageNumber, pageSize));
+    }
+
 }
+
+
