@@ -8,10 +8,10 @@ import java.util.Objects;
 public class Student {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String name;
-    private int age;
+    private Integer age;
     @ManyToOne
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
