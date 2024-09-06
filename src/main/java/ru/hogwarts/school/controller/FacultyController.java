@@ -73,4 +73,10 @@ public class FacultyController {
     public Collection<Student> printStudentsOfFaculty(@PathVariable("id") long facultyId) {
         return facultyService.printStudentsOfFaculty(facultyId);
     }
+
+    @GetMapping("{name}/{color}")
+    public List<Faculty> getAllByNameAndColor(@PathVariable("name") String name, @PathVariable("color") String color) {
+        List<Faculty> facultyList = facultyService.getAllByNameAndColor(name, color);
+        return ResponseEntity.ok(facultyList).getBody();
+    }
 }

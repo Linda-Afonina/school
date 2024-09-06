@@ -53,4 +53,8 @@ public class FacultyService {
                 .map(Faculty::getStudentsOfFaculty)
                 .orElse(null);
     }
+
+    public List<Faculty> getAllByNameAndColor(String name, String color) {
+        return facultyRepository.findAllByNameAndColor(name, color);
+    }
 }

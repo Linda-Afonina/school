@@ -77,6 +77,12 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAllStudent(pageNumber, pageSize));
     }
 
+    @GetMapping("name/{name}")
+    public ResponseEntity<List<Student>> getAllByName(@PathVariable("name") String name) {
+        List<Student> studentList = studentService.getAllByName(name);
+        return ResponseEntity.ok(studentList);
+    }
+
 }
 
 
