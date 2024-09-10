@@ -68,4 +68,8 @@ public class StudentService {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
         return studentRepository.findAll(pageRequest).getContent();
     }
+
+    public List<Student> getAllByName(String name) {
+        return studentRepository.findAllByName(name);
+    }
 }
