@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Avatar {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
     private String filePath;
     private long fileSize;
