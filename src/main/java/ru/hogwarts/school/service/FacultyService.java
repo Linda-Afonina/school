@@ -7,10 +7,7 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -72,5 +69,12 @@ public class FacultyService {
     public List<Faculty> getAllByNameAndColor(String name, String color) {
         logger.info("Was invoked method for get all faculties by name {} and color {}", name, color);
         return facultyRepository.findAllByNameAndColor(name, color);
+    }
+
+    public String getLongestNameOfFaculty() {
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElse("Факультеты не найдены");
     }
 }

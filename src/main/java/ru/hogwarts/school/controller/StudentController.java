@@ -83,6 +83,16 @@ public class StudentController {
         return ResponseEntity.ok(studentList);
     }
 
+    @GetMapping("name-start-with-a")
+    public List<String> getStudentsWhoseNameStartWithA() {
+        return studentService.getStudentsWhoseNameStartWithA();
+    }
+
+    @GetMapping("get-average-age-2")
+    public double getAverageAge2() {
+        return studentService.getAverageAge2();
+    }
+
 }
 
 
